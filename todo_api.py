@@ -10,20 +10,23 @@ def query_todos(username):
     return json.dumps(agendas.find_one({'username':username})['todolist'])
 
 def delete_todos(username,tid=None):
-    if(agendas.count_documents({'username':username})==0):
-        return False
-    if tid==None:
-        agendas.update_one({'username':username},{'$set':{'todolist':None}})
-        return True
-    #delete specified todo
-    todolist=agendas.find_one({'username':username})['todolist']
-    for todo in todolist:
-        if(todo['tid']==tid):
-            todolist.remove(todo)
-            agendas.update_one({'username':username},{'$set':{'todolist':todolist}})
-            return True
-    return False
-    # if (agendas.count_documents({'$and':[{'username':username},]}))
+    if tid == None:
+        return None!=agendas.find_one_and_update({'username':username},{'$set':{'todolist':[]}})
+    
+    # if(agendas.count_documents({'username':username})==0):
+    #     return False
+    # if tid==None:
+    #     agendas.update_one({'username':username},{'$set':{'todolist':None}})
+    #     return True
+    # #delete specified todo
+    # todolist=agendas.find_one({'username':username})['todolist']
+    # for todo in todolist:
+    #     if(todo['tid']==tid):
+    #         todolist.remove(todo)
+    #         agendas.update_one({'username':username},{'$set':{'todolist':todolist}})
+    #         return True
+    # return False
+    
 def add_todo(username,title=None,date_time=None,todo=None):
     print('todo')
     if agendas.count_documents({'username':username})==0:#没有用户

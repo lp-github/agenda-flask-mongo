@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+from pymongo import MongoClient,CursorType
 import json
 import string
 conn = MongoClient('localhost',27017)
@@ -6,7 +6,8 @@ db = conn["test"]
 agendas = db['agenda']
 
 def query_user():
-    cursor=agendas.find()
+    cursor=agendas.find({},{'username':1})
+    
     res=[]
     for a in cursor:
         res.append(a['username'])
